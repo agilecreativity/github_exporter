@@ -1,4 +1,8 @@
 #!/usr/bin/env ruby
-require_relative '../lib/github_exporter'
+require_relative "../lib/github_exporter"
 include GithubExporter
-GithubExporter::CLI.start(ARGV)
+if ARGV.empty?
+  GithubExporter::CLI.start(%w[usage])
+else
+  GithubExporter::CLI.start(%w[export].concat(ARGV))
+end

@@ -40,12 +40,9 @@ module GithubExporter
         opts.fetch(:theme, "default"),
         "--recursive"
       ]
+      args.concat(["--non-exts"]).concat(non_exts) unless non_exts.empty?
 
-      # Add file without the extension if any
-      unless non_exts.empty?
-        args.concat(["--non-exts"]).concat(non_exts)
-      end
-      puts "Your input options for VimPrinter : #{args}"
+      puts "FYI: input options for VimPrinter : #{args}"
       VimPrinter::CLI.start(args)
     end
 

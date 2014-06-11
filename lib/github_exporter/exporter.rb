@@ -3,9 +3,8 @@ require "uri"
 require "agile_utils"
 require_relative "../github_exporter"
 module GithubExporter
-  # The temporary directory
   TMP_DIR = "github_exporter_tmp"
-
+  # rubocop:disable ClassLength, MethodLength
   class Exporter
     attr_reader :url,
                 :exts,
@@ -41,6 +40,7 @@ module GithubExporter
       files2htmls
       htmls2pdfs
       pdfs2pdf
+      copy_output
       cleanup
     end
 
@@ -89,51 +89,39 @@ module GithubExporter
 
     # Convert files to htmls
     def files2htmls
-      if input_available?
-        GithubExporter.files_to_htmls base_dir: output_path,
-                                      exts:     exts,
-                                      non_exts: non_exts,
-                                      theme:    theme
-      end
+      GithubExporter.files_to_htmls base_dir: output_path,
+                                    exts:     exts,
+                                    non_exts: non_exts,
+                                    theme:    theme if input_available?
     end
 
     # Convert list of html to list of pdf files
     def htmls2pdfs
       input_file = File.expand_path("#{output_path}/vim_printer_#{repo_name}.tar.gz")
-      if File.exist?(input_file)
-        FileUtils.mkdir_p output_dir
-        # input_file = File.expand_path("#{output_path}/vim_printer_#{repo_name}.tar.gz")
-        AgileUtils::FileUtil.gunzip input_file, output_dir
-        GithubExporter.htmls_to_pdfs(base_dir: output_dir)
-      end
+      FileUtils.mkdir_p output_dir
+      AgileUtils::FileUtil.gunzip input_file, output_dir if File.exist?(input_file)
+      GithubExporter.htmls_to_pdfs base_dir: output_dir
     end
 
     # Merge/join multiple pdf files into single pdf
     def pdfs2pdf
       input_file = File.expand_path("#{output_dir}/html2pdf_#{repo_name}.tar.gz")
-      if File.exist?(input_file)
-        AgileUtils::FileUtil.gunzip input_file, output_dir
-        GithubExporter.pdfs_to_pdf base_dir: output_dir,
-                                   recursive: true
-      end
+      AgileUtils::FileUtil.gunzip input_file, output_dir if File.exist?(input_file)
+      GithubExporter.pdfs_to_pdf base_dir:  output_dir,
+                                 recursive: true
+    end
+
+    def copy_output
+      generated_file = "#{output_dir}/pdfs2pdf_#{repo_name}.pdf"
+      destination_file = File.expand_path(File.dirname(output_dir) + "../../#{repo_name}.pdf")
+      FileUtils.mv generated_file, destination_file if File.exist?(generated_file)
+      puts "Your final output is #{File.expand_path(destination_file)}"
     end
 
     def cleanup
-      generated_file = "#{output_dir}/pdfs2pdf_#{repo_name}.pdf"
-      if File.exist?(generated_file)
-        destination_file = File.expand_path(File.dirname(output_dir) + "../../#{repo_name}.pdf")
-        FileUtils.mv generated_file, destination_file
-        puts "Your final output is #{File.expand_path(destination_file)}"
-
-        # Now cleanup the generated files
-        FileUtils.rm_rf File.expand_path(File.dirname(output_dir) + "../../#{GithubExporter::TMP_DIR}")
-
-        # Also remove the 'vim_printer_#{repo_name}.tar.gz' if we have one
-        FileUtils.rm_rf File.expand_path(File.dirname(output_dir) + "../../#{repo_name}/vim_printer_#{repo_name}.tar.gz")
-      end
+      FileUtils.rm_rf File.expand_path(File.dirname(output_dir) + "../../#{GithubExporter::TMP_DIR}")
+      FileUtils.rm_rf File.expand_path(File.dirname(output_dir) + "../../#{repo_name}/vim_printer_#{repo_name}.tar.gz")
     end
-
-  private
 
     def output_dir
       File.expand_path("#{base_dir}/#{GithubExporter::TMP_DIR}/#{repo_name}")
@@ -152,11 +140,9 @@ module GithubExporter
     #  project_name('https://github.com/erikhuda/thor.git') #=> 'thor'
     #  project_name('https://github.com/erikhuda/thor')     #=> 'thor'
     def project_name(uri)
-      if uri
-        name = URI(uri).path.split(File::SEPARATOR).last
-        # strip the '.' if any
-        File.basename(name, ".*") if name
-      end
+      name = URI(uri).path.split(File::SEPARATOR).last if uri
+      File.basename(name, ".*") if name
     end
   end
+  # robocop:enable All
 end

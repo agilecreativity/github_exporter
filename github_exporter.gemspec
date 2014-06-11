@@ -7,12 +7,11 @@ Gem::Specification.new do |spec|
   spec.version       = GithubExporter::VERSION
   spec.authors       = ["Burin Choomnuan"]
   spec.email         = ["agilecreativity@gmail.com"]
-  spec.summary       = %q(Export any project from github to a single pdf file)
-  spec.description   = %q{Export any project from github to a single pdf file.
+  spec.summary       = %q(Export any project from Github or a local project directory to a single pdf file)
+  spec.description   = %q{Export any project from Github (or a local directory) to a single pdf file.
                           Combine useful features of the following ruby gems
                           (vim_printer, html2pdf, pdfs2pdf and others)
-                          to produce a single pdf file that can be view any where
-                          where pdf is supported.
+                          to produce a single pdf file for quick review.
                          }
   spec.homepage      = "https://github.com/agilecreativity/github_exporter"
   spec.license       = "MIT"

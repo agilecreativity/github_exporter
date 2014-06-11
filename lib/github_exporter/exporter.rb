@@ -9,19 +9,23 @@ module GithubExporter
     attr_reader :url,
                 :exts,
                 :non_exts,
-                :theme
+                :theme,
+                :output_name
+
     attr_reader :base_dir,
                 :repo_name,
                 :output_path
-    # Constructor for Executor
+
+    # The initializer for Exporter
     #
     # @param [String] url the input URL like
-    #        https://github.com/opal/opal.git or just the immediat folder name
+    #        https://github.com/opal/opal.git or just the immediate folder name
     # @param [Hash<Symbol,Object>] opts the option hash
     #
     # @option opts [Array<String>] :exts the list of file extension to be used
     # @option opts [Array<String>] :non_exts the list of file without extension to be used
-    # @option opts [String]        :theme the theme to use for `vim_printer`
+    # @option opts [String]        :theme the colorscheme to use with `vim_printer`
+    # @option opts [String]        :output_name the output filename if any
     def initialize(url, opts = {})
       @url         = url
       @base_dir    = Dir.pwd
@@ -30,6 +34,7 @@ module GithubExporter
       @theme       = opts[:theme]    || "default"
       @repo_name   = project_name(url)
       @output_path = File.expand_path([base_dir, repo_name].join(File::SEPARATOR))
+      @output_name = pdf_filename(opts[:output_name]) || "#{@repo_name}.pdf"
     end
 
     # Print and export the source from a given URL to a pdf
@@ -46,13 +51,14 @@ module GithubExporter
 
     def to_s
       <<-EOT
-      url         : #{url}
-      base_dir    : #{base_dir}
-      exts        : #{exts}
-      non_exts    : #{non_exts}
-      repo_name   : #{repo_name}
-      theme       : #{theme}
-      output_path : #{output_path}
+        url         : #{url}
+        base_dir    : #{base_dir}
+        exts        : #{exts}
+        non_exts    : #{non_exts}
+        repo_name   : #{repo_name}
+        theme       : #{theme}
+        output_path : #{output_path}
+        output_name : #{output_name}
      EOT
     end
 
@@ -113,7 +119,7 @@ module GithubExporter
 
     def copy_output
       generated_file = "#{output_dir}/pdfs2pdf_#{repo_name}.pdf"
-      destination_file = File.expand_path(File.dirname(output_dir) + "../../#{repo_name}.pdf")
+      destination_file = File.expand_path(File.dirname(output_dir) + "../../#{output_name}")
       FileUtils.mv generated_file, destination_file if File.exist?(generated_file)
       puts "Your final output is #{File.expand_path(destination_file)}"
     end
@@ -142,6 +148,23 @@ module GithubExporter
     def project_name(uri)
       name = URI(uri).path.split(File::SEPARATOR).last if uri
       File.basename(name, ".*") if name
+    end
+
+    # Add/rename the file extension to pdf
+    #
+    # @param [String] filename input file
+    # @return [String,NilClass] output file with .pdf as extension or nil
+    def pdf_filename(filename)
+      return nil unless filename
+      extname  = File.extname(filename)
+      basename = File.basename(filename, ".*")
+      if extname == ""
+        "#{filename}.pdf"
+      elsif extname != ".pdf"
+        "#{basename}.pdf"
+      else
+        filename
+      end
     end
   end
   # robocop:enable All

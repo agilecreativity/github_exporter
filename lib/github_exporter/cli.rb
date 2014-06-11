@@ -5,15 +5,15 @@ require "pdfs2pdf"
 require_relative "github_exporter"
 module GithubExporter
   class CLI < Thor
-    desc "export", "Export a given URL or project to a single pdf file"
+    desc "export", "Export a given Github project or a local project to a single pdf file"
     method_option "url",
                   aliases:  "-u",
-                  desc:     "The full url of the github project to be cloned",
+                  desc:     "The full url of the github project to be cloned or local project directory (mandatory)",
                   required: true
     method_option "exts",
                   type:     :array,
                   aliases:  "-e",
-                  desc:     "The list of file extension to be exported",
+                  desc:     "The list of file extension to be exported (mandatory)",
                   required: true
     method_option "non_exts",
                   type:     :array,
@@ -25,11 +25,17 @@ module GithubExporter
                   aliases:  "-t",
                   desc:     "The theme to be used with vim_printer",
                   default:  "default"
+    method_option "output_name",
+                  type:     :string,
+                  aliases:  "-o",
+                  desc:     "The output filename (optional)"
     def export
       exporter = GithubExporter::Exporter.new options[:url],
-                                              exts:     options[:exts],
-                                              non_exts: options[:non_exts],
-                                              theme:    options[:theme]
+                                              exts:        options[:exts],
+                                              non_exts:    options[:non_exts],
+                                              theme:       options[:theme],
+                                              output_name: options[:output_name]
+
       exporter.export
     end
 
@@ -38,28 +44,28 @@ module GithubExporter
       puts <<-EOS
 Usage:
 
-  $github_exporter -e, --exts=EXT1 EXT2 EXT3 -u, --url=URL -theme=theme_name
+  $github_exporter -u, --url=URL \
+                   -e, --exts=EXT1 EXT2 EXT3 \
+                   -t, --theme=theme_name \
+                   -o, --output-name=output_file.pdf
 
 Example:
 
   # Export the *.rb from the given repository
 
-  $github_exporter -e rb -u https://github.com/agilecreativity/filename_cleaner.git
+  $github_exporter -e rb -u https://github.com/agilecreativity/github_exporter.git
 
-  # Export the *.rb and also 'Gemfile' from a given directory 'filename_cleaner'
-  # Note: must be one directory directly relative to current directory
+  # Export the *.rb and also 'Gemfile' from a 'github_exporter' directory
+  # Note: this directory must be directly below the current directory
 
-  $github_exporter -e rb -f Gemfile -u filename_cleaner
+  $github_exporter -e rb -f Gemfile -u github_exporter
 
-  # Export the *.rb and also 'Gemfile' from a given directory 'filename_cleaner'
-  # using 'solarized' theme
-  # Note: must be one directory directly relative to current directory
-
+  # Same as previous command with the 'solarized' instead of 'default' colorscheme
   $github_exporter -e rb -f Gemfile -u filename_cleaner -t solarized
 
 Options:
 
-  -u, --url=URL                   # The full url of the github project to be cloned
+  -u, --url=URL                   # The full url of the github project to be cloned OR local directory name
 
   -e, --exts=EXT1 EXT2 EXT3 ..    # The list of extension names to be exported
                                   # e.g. -e md rb java
@@ -67,11 +73,14 @@ Options:
   -f, [--non-exts=one two three]  # The list of file without extension to be exported
                                   # e.g. -f Gemfile LICENSE
 
-  -t, [--theme=theme_name]        # The theme to be used with vim_printer see :h :colorscheme from Vim
+  -t, [--theme=theme_name]        # The theme/colorscheme to be used with vim_printer see :help :colorscheme from inside Vim
                                   # default: 'default'
                                   # e.g. -t solarized
 
-Export a given URL or project to a single pdf file
+  -o, [--output-name=output.pdf]  # The output pdf filename (will default to 'repository_name'.pdf)
+                                  # e.g. -o repository_name.pdf
+
+Export a given Github project or a local project directory to a single pdf file
 
       EOS
     end

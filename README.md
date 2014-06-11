@@ -25,30 +25,28 @@ gem install github_exporter
 ## Synopsis/Usage
 
 ```shell
+
 Usage:
 
-  $github_exporter -e, --exts=EXT1 EXT2 EXT3 -u, --url=URL -theme=theme_name
+  $github_exporter -e, --exts=EXT1 EXT2 EXT3 -u, --url=URL -theme=theme_name --output-name=output_file.pdf
 
 Example:
 
   # Export the *.rb from the given repository
 
-  $github_exporter -e rb -u https://github.com/agilecreativity/filename_cleaner.git
+  $github_exporter -e rb -u https://github.com/agilecreativity/github_exporter.git
 
-  # Export the *.rb and also 'Gemfile' from a given directory 'filename_cleaner'
-  # Note: must be one directory directly relative to current directory
+  # Export the *.rb and also 'Gemfile' from a 'github_exporter' directory
+  # Note: this directory must be directly below the current directory
 
-  $github_exporter -e rb -f Gemfile -u filename_cleaner
+  $github_exporter -e rb -f Gemfile -u github_exporter
 
-  # Export the *.rb and also 'Gemfile' from a given directory 'filename_cleaner'
-  # using 'solarized' theme
-  # Note: must be one directory directly relative to current directory
-
+  # Same as previous command with the 'solarized' instead of 'default' colorscheme
   $github_exporter -e rb -f Gemfile -u filename_cleaner -t solarized
 
 Options:
 
-  -u, --url=URL                   # The full url of the github project to be cloned
+  -u, --url=URL                   # The full url of the github project to be cloned OR local directory name
 
   -e, --exts=EXT1 EXT2 EXT3 ..    # The list of extension names to be exported
                                   # e.g. -e md rb java
@@ -56,11 +54,14 @@ Options:
   -f, [--non-exts=one two three]  # The list of file without extension to be exported
                                   # e.g. -f Gemfile LICENSE
 
-  -t, [--theme=theme_name]        # The theme to be used with vim_printer see :h :colorscheme from Vim
+  -t, [--theme=theme_name]        # The theme/colorscheme to be used with vim_printer see :help :colorscheme from inside Vim
                                   # default: 'default'
                                   # e.g. -t solarized
 
-Export a given URL or project to a single pdf file
+  -o, [--output-name=output.pdf]  # The output pdf filename (will default to 'repository_name'.pdf)
+                                  # e.g. -o repository_name.pdf
+
+Export a given Github project or a local project directory to a single pdf file
 
 ```
 
@@ -111,11 +112,11 @@ Your final output is ./github_exporter.pdf
 github_exporter -u https://github.com/agilecreativity/github_exporter.git --exts rb
 ```
 
-Which generated the following [pdf output file](/samples/github_exporter_default_colorscheme.pdf)
+Which generated the following [pdf output file](https://github.com/agilecreativity/github_exporter/raw/master/samples/github_exporter_default_colorscheme.pdf)
 
 The example screenshot:
 
-![](/samples/github_exporter_default_colorscheme.png)
+![](https://github.com/agilecreativity/github_exporter/raw/master/samples/github_exporter_default_colorscheme.png)
 
 #### Use non-default colorscheme/theme for Vim
 
@@ -125,11 +126,11 @@ Use [seoul256][] colorscheme
 github_exporter -u https://github.com/agilecreativity/github_exporter.git --exts rb --theme seoul256
 ```
 
-Which generated the following [pdf output file](/samples/github_exporter_seoul256_colorscheme.pdf)
+Which generated the following [pdf output file](https://github.com/agilecreativity/github_exporter/raw/master/samples/github_exporter_seoul256_colorscheme.pdf)
 
 The example screenshot:
 
-![](/samples/github_exporter_seoul256_colorscheme.png)
+![](https://github.com/agilecreativity/github_exporter/raw/master/samples/github_exporter_seoul256_colorscheme.png)
 
 ### Contributing
 

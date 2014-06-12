@@ -1,3 +1,7 @@
+#### 0.1.3
+
+- Use the latest version of [vim_printer][] gem
+
 #### 0.1.2
 
 - Add optional `--output-name` for pdf output (default to #{repository_name}.pdf)
@@ -14,3 +18,4 @@
 - Allow the export from local source
 
 [semantic versioning]: http://semver.org
+[vim_printer]: https://github.com/agilecreativity/vim_printer

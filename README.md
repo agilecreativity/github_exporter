@@ -146,8 +146,8 @@ The example screenshot:
 [pry]: https://github.com/pry/pry
 [rubocop]: https://github.com/bbatsov/rubocop
 [grit]: https://github.com/mojombo/grit
-[Ghostscript]: http://todo.com/
-[Wkhtmltopdf]: http://todo.com/
+[Ghostscript]: http://ghostscript.com/doc/current/Install.htm
+[Wkhtmltopdf]: https://github.com/pdfkit/pdfkit/wiki/Installing-WKHTMLTOPDF
 [Vim]: http://www.vim.org
 [vim_printer]: https://github.com/agilecreativity/vim_printer
 [pdfs2pdf]: https://github.com/agilecreativity/pdfs2pdf

@@ -1,3 +1,8 @@
+#### 0.1.4
+
+- Use the latest version of [vim_printer][] gem
+- Use the latest version of [code_lister][] gem
+
 #### 0.1.3
 
 - Use the latest version of [vim_printer][] gem
@@ -18,4 +23,5 @@
 - Allow the export from local source
 
 [semantic versioning]: http://semver.org
+[code_lister]: https://github.com/agilecreativity/code_lister
 [vim_printer]: https://github.com/agilecreativity/vim_printer

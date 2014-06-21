@@ -1,3 +1,10 @@
+#### 0.1.5
+
+- Update `agile_utils` to 0.1.4
+- Update `code_lister` to 0.1.7
+- Update `vim_printer` to 0.1.12
+- Update `html2pdf`    to 0.1.7
+
 #### 0.1.4
 
 - Use the latest version of [vim_printer][] gem

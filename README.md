@@ -1,12 +1,6 @@
 ## github_exporter
 
-[![Gem Version](https://badge.fury.io/rb/github_exporter.svg)][gem]
-[![Dependency Status](https://gemnasium.com/agilecreativity/github_exporter.png)][gemnasium]
-[![Code Climate](https://codeclimate.com/github/agilecreativity/github_exporter.png)][codeclimate]
-
-[gem]: http://badge.fury.io/rb/github_exporter
-[gemnasium]: https://gemnasium.com/agilecreativity/github_exporter
-[codeclimate]: https://codeclimate.com/github/agilecreativity/github_exporter
+DEPRECATED: please use [source2pdf][] or [source2epub][] for maximum awesome!!!
 
 Export/print content of a given github repository (or local project directory) to single pdf for quick review offline.
 
@@ -154,3 +148,5 @@ The example screenshot:
 [html2pdf]: https://github.com/agilecreativity/html2pdf
 [monokai]: https://github.com/lsdr/monokai
 [seoul256]: https://github.com/junegunn/seoul256.vim
+[source2epub]: https://github.com/agilecreativity/source2epub
+[source2pdf]: https://github.com/agilecreativity/source2pdf

@@ -1,3 +1,7 @@
+#### 0.1.6
+
+- NOTE: this gem is now deprecated. Please use [source2epub][] or [source2pdf][]
+
 #### 0.1.5
 
 - Update `agile_utils` to 0.1.4
@@ -32,3 +36,5 @@
 [semantic versioning]: http://semver.org
 [code_lister]: https://github.com/agilecreativity/code_lister
 [vim_printer]: https://github.com/agilecreativity/vim_printer
+[source2epub]: https://github.com/agilecreativity/source2epub
+[source2pdf]: https://github.com/agilecreativity/source2pdf
